@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--自动扫描Controller层-->
+    <context:component-scan base-package="blog.controller"/>
+
+    <!-- 配置SpringMVC -->
+    <!-- 1.开启SpringMVC注解模式 -->
+    <!-- 简化配置：
+        (1)自动注册DefaultAnootationHandlerMapping,AnotationMethodHandlerAdapter
+        (2)提供一些列：数据绑定，数字和日期的format @NumberFormat, @DateTimeFormat, xml,json默认读写支持
+    -->
+    <mvc:annotation-driven />
+
+    <!--&lt;!&ndash;文件上传&ndash;&gt;-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传最大尺寸为50MB-->
+        <property name="maxUploadSizePerFile" value="52428800"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="resolveLazily" value="true"/>
+    </bean>
+
+
+
+    <!-- 静态资源映射 -->
+    <mvc:resources mapping="/css/**" location="/static/css/"/>
+    <mvc:resources mapping="/img/**" location="/static/img/"/>
+    <mvc:resources mapping="/js/**" location="/static/js/"/>
+    <mvc:resources mapping="/plugin/**" location="/static/plugin/"/>
+
+
+
+    <!--远行时就加载资源-->
+    <mvc:interceptors>
+        <!-- other -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="blog.controller.other.HomeResourceInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/other/**"/>
+            <bean class="blog.controller.other.LoginController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="blog.controller.other.IndexController"/>
+        </mvc:interceptor>
+
+
+
+
+        <!-- former -->
+        <mvc:interceptor>
+            <mvc:mapping path="/article/**"/>
+            <bean class="blog.controller.former.ArticleController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/category/**"/>
+            <bean class="blog.controller.former.CategoryController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/notice/**"/>
+            <bean class="blog.controller.former.NoticeController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="blog.controller.former.PageController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/tag/**"/>
+            <bean class="blog.controller.former.TagController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/comment/**"/>
+            <bean class="blog.controller.former.CommentController"/>
+        </mvc:interceptor>
+
+
+
+
+        <!-- after -->
+        <mvc:interceptor>
+            <mvc:mapping path="/after/**"/>
+            <bean class="blog.controller.after.AfterController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/page/**"/>
+            <bean class="blog.controller.after.AfterPageController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/user/**"/>
+            <bean class="blog.controller.after.AfterUserController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/announcement/**"/>
+            <bean class="blog.controller.after.AnnouncementController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/comments/**"/>
+            <bean class="blog.controller.after.CommentsController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/essay/**"/>
+            <bean class="blog.controller.after.EssayController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/link/**"/>
+            <bean class="blog.controller.after.LinkController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/options/**"/>
+            <bean class="blog.controller.after.OptionsController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/setup/**"/>
+            <bean class="blog.controller.after.setupController"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/comment/**"/>
+            <bean class="blog.controller.after.OtherCommentController"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <!--配置SpringMVC的视图解析器: 配置前缀和后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 配置视图跳转的前缀 -->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <!-- 配置视图跳转的后缀 -->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+</beans>
