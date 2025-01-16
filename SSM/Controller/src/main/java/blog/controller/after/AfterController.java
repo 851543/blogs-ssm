@@ -48,19 +48,19 @@ public class AfterController implements HandlerInterceptor {
      */
     @RequestMapping("/manage")
     public String index(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Integer userId = null;
-        if (!UserRole.ADMIN.getValue().equals(user.getUserRole())) {
-            // 用户查询自己的文章, 管理员查询所有的
-            userId = user.getUserId();
-        }
-        //文章列表
-        List<Article> articleList = articleService.listRecentArticle(userId, 5);
-        model.addAttribute("articleList", articleList);
-
-        //评论列表
-        List<Comment> commentList = commentService.listRecentComment(userId, 5);
-        model.addAttribute("commentList", commentList);
+//        User user = (User) session.getAttribute("user");
+//        Integer userId = null;
+//        if (!UserRole.ADMIN.getValue().equals(user.getUserRole())) {
+//            // 用户查询自己的文章, 管理员查询所有的
+//            userId = user.getUserId();
+//        }
+//        //文章列表
+//        List<Article> articleList = articleService.listRecentArticle(userId, 5);
+//        model.addAttribute("articleList", articleList);
+//
+//        //评论列表
+//        List<Comment> commentList = commentService.listRecentComment(userId, 5);
+//        model.addAttribute("commentList", commentList);
         return "/after/manage";
     }
 }
